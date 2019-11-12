@@ -15,9 +15,9 @@ dispatcher = updater.dispatcher
 
 updater = Updater(token=settings.BOT_TOKEN, use_context=True)
 dispatcher = updater.dispatcher
-dispatcher.add_handler(MessageHandler(Filters.contact, ))
-dispatcher.add_handler(CallbackQueryHandler())
-dispatcher.add_handler(CommandHandler('start', ))
+#dispatcher.add_handler(MessageHandler(Filters.contact, ))
+#dispatcher.add_handler(CallbackQueryHandler())
+#dispatcher.add_handler(CommandHandler('start', ))
 logger.info("* Start polling")
 updater.start_polling()  # Starts polling in a background thread.
 updater.idle()  # Stops until Ctrl+C is pressed
