@@ -4,7 +4,7 @@ from telegram import Update
 from telegram.ext import CommandHandler, CallbackContext, MessageHandler, Filters, Updater
 import buttons
 import settings
-import  library_functions
+import library_functions
 from telegram import ReplyKeyboardRemove
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters,
                           ConversationHandler)
@@ -53,9 +53,10 @@ def get_time(update, context):
     logger.info(f"in get_time #{chat_id}")
     context.user_data['ride']['time'] = text
     logger.info(f"time {text}, {library_functions.validation_hour(text)}")
-    if not library_functions.validation_hour(text):
+    if not library_functions.validation_hour(text):  # if time is invalid
         update.message.reply_text(' invalid time, please enter again?')
         return DRIVER_TIME
+
     update.message.reply_text('Enter place of departure:')
 
     return DRIVER_SOURCE
