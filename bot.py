@@ -12,7 +12,7 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, Call
 import user_driver_bot
 import buttons
 from telegram import ReplyKeyboardRemove, KeyboardButton
-
+import library_functions
 updater = Updater(token=settings.BOT_TOKEN, use_context=True)
 logging.basicConfig(
     format='[%(levelname)s %(asctime)s %(module)s:%(lineno)d] %(message)s',
@@ -43,13 +43,21 @@ def start(update: Update, context: CallbackContext):
     return PHONE
 
 
-def get_phone(update, context):
+def get_data_user(update, context):
     chat_id = update.effective_chat.id
     phone = update.message.contact.phone_number
     logger.info(f"get_phone#{chat_id} phone {phone}")
-    context.user_data['phone'] = phone
 
-    update.message.reply_text(text="Are you a passenger or a driver? ",
+    chat_id = update.effective_chat.id
+    first_name = update.effective_chat.first_name
+    last_name = update.effective_chat.last_name
+    username = update.effective_chat.username
+    context.user_data['user'] = {"id": chat_id, "first_name": first_name, "last_name": last_name, "username": username,
+                                 "phone": phone}
+
+    library_functions.insert_user(context.user_data['user'])
+
+    update.message.reply_text(text= f"user:{context.user_data['user']}\n Are you a passenger or a driver? ",
                               reply_markup=buttons.get_enter_buttons())
 
 
@@ -87,7 +95,7 @@ dispatcher.add_handler(debug_handler)
 start_conv_handler = ConversationHandler(
     entry_points=[CommandHandler('start', start)],
     states={
-        PHONE: [MessageHandler(Filters.contact, get_phone, edited_updates=True)]
+        PHONE: [MessageHandler(Filters.contact, get_data_user, edited_updates=True)]
 
     },
 
