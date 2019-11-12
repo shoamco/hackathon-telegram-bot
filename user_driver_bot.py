@@ -50,15 +50,15 @@ def get_date(update: Update, context: CallbackContext):
 def get_time(update, context):
     text = update.message.text
     chat_id = update.effective_chat.id
-    logger.info(f"in get_time #{chat_id}")
-    context.user_data['ride']['time'] = text
+    logger.info(f"in get_time #{chat_id} text{text}")
     logger.info(f"time {text}, {library_functions.validation_hour(text)}")
+
     if not library_functions.validation_hour(text):  # if time is invalid
-        update.message.reply_text(' invalid time, please enter again?')
+        update.message.reply_text('invalid time, please enter again?')
         return DRIVER_TIME
 
     update.message.reply_text('Enter place of departure:')
-
+    context.user_data['ride']['time'] = text
     return DRIVER_SOURCE
 
 
@@ -66,8 +66,11 @@ def get_source(update, context):
     text = update.message.text
     chat_id = update.effective_chat.id
     logger.info(f"in get_source #{chat_id}")
-    context.user_data['ride']['source'] = text
 
+    if not library_functions.place_validation(text):
+        update.message.reply_text(' invalid name place, please enter again?')
+        return DRIVER_SOURCE
+    context.user_data['ride']['source'] = text
     update.message.reply_text('Enter a destination :')
 
     return DRIVER_DESTINATION
@@ -76,10 +79,13 @@ def get_source(update, context):
 def get_destination(update, context):
     text = update.message.text
     chat_id = update.effective_chat.id
-    logger.info(f"in get_destination #{chat_id}")
+    logger.info(f"in get_destination #{chat_id} text{text}")
+
+    if not library_functions.place_validation(text):
+        update.message.reply_text(' invalid name place, please enter again?')
+        return DRIVER_SOURCE
 
     context.user_data['ride']['destination'] = text
-
     update.message.reply_text(' How many spare places do you have?')
     return DRIVER_PLACE
 
