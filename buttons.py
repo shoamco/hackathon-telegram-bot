@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup,ReplyKeyboardMarkup
 from datetime import date, timedelta
 client = MongoClient()
 
@@ -17,13 +17,16 @@ def to_cols(data, n_cols=2):
 
 
 def get_enter_buttons():
-    # buttons = [[InlineKeyboardButton('driver', callback_data='driver')],
-    #              [InlineKeyboardButton('/passenger', callback_data='/passenger')]]
+    buttons = [[InlineKeyboardButton('/driver', callback_data='/driver')],
+                 [InlineKeyboardButton('/passenger', callback_data='/passenger')]]
     # reply_markup = InlineKeyboardMarkup(buttons)
+    reply_markup = ReplyKeyboardMarkup(buttons)
     # update.message.reply_text('Choose your option:', reply_markup=reply_markup)
-
-    buttons = [InlineKeyboardButton(s, callback_data=s) for s in ['/driver', '/passenger']]
-    reply_markup = InlineKeyboardMarkup(to_cols(buttons))
+    # menu_main = [[InlineKeyboardButton('/driver', callback_data='/driver')],
+    #              [InlineKeyboardButton('/passenger', callback_data='/passenger')]]
+    # reply_markup = ReplyKeyboardMarkup(menu_main)
+    # buttons = [InlineKeyboardButton(s, callback_data=s) for s in ['/driver', '/passenger']]
+    # reply_markup = InlineKeyboardMarkup(to_cols(buttons))
     return reply_markup
 
 

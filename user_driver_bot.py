@@ -13,7 +13,7 @@ import logging
 
 from telegram import Update,CallbackQuery
 from telegram.ext import CommandHandler, CallbackContext
-
+import library_functions
 DRIVER_DATE, DRIVER_TIME, DRIVER_SOURCE, DRIVER_DESTINATION, DRIVER_PLACE = range(5)
 logger = logging.getLogger(__name__)
 
@@ -83,6 +83,8 @@ def get_place(update, context):
 
     update.message.reply_text(f"Your ride has been recorded:\n"
                               f"{context.user_data['driver']}")
+    library_functions.insert_ride_to_db(context.user_data['driver'],chat_id )
+    # library_functions.insert_user()
     return ConversationHandler.END
 
 
