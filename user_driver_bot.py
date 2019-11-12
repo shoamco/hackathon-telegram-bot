@@ -4,6 +4,7 @@ from telegram import Update
 from telegram.ext import CommandHandler, CallbackContext, MessageHandler, Filters, Updater
 import buttons
 import settings
+import  library_functions
 from telegram import ReplyKeyboardRemove
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters,
                           ConversationHandler)
@@ -26,7 +27,6 @@ def start_driver(update, context):
     logger.info(f"in start_driver id#{chat_id} name {first_name} {last_name} username {username}")
     update.message.reply_text('Enter a travel date\n', one_time_keyboard=True, reply_markup=buttons.get_dates_options())
     context.user_data['ride'] = dict()
-    context.user_data['user'] = {"id": chat_id, "last_name": last_name}
     context.user_data['user'] = {"id": chat_id, "first_name": first_name, "last_name": last_name, "username": username}
     return DRIVER_DATE
 
@@ -52,7 +52,10 @@ def get_time(update, context):
     chat_id = update.effective_chat.id
     logger.info(f"in get_time #{chat_id}")
     context.user_data['ride']['time'] = text
-
+    logger.info(f"time {text}, {library_functions.validation_hour(text)}")
+    if not library_functions.validation_hour(text):
+        update.message.reply_text(' invalid time, please enter again?')
+        return DRIVER_TIME
     update.message.reply_text('Enter place of departure:')
 
     return DRIVER_SOURCE
@@ -73,6 +76,7 @@ def get_destination(update, context):
     text = update.message.text
     chat_id = update.effective_chat.id
     logger.info(f"in get_destination #{chat_id}")
+
     context.user_data['ride']['destination'] = text
 
     update.message.reply_text(' How many spare places do you have?')
@@ -87,7 +91,7 @@ def get_place(update, context):
 
     update.message.reply_text(f"Your ride has been recorded:\n"
                               f"ride: {context.user_data['ride']}\n"
-                              f"user:{context.user_data['ride']} ")
+                              f"user:{context.user_data['user']} ")
     library_functions.insert_ride_to_db(context.user_data['user'], chat_id)
     library_functions.insert_user(context.user_data['user'])
     return ConversationHandler.END
