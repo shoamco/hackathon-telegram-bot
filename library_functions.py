@@ -40,7 +40,8 @@ def place_validation(name):
     # if len(data) == 0:
     #     raise UnknownLocation(f"{name}")
     try:
-        geocode(name)
+        param = '%20'.join(name.split(' '))
+        geocode(param)
     except UnknownLocation as e:
         return False
     return True
