@@ -102,5 +102,5 @@ date = "2019-11-12"
 hour = "23:15"
 hour = hour + ":00"
 print (date + " " + hour)
-datetime_object = datetime.strptime(date + " " + hour, '%y-%m-%d %H:%M:%S')
-print(datetime_object)
+#datetime_object = datetime.strptime(date + " " + hour, '%y-%m-%d %H:%M:%S')
+#print(datetime_object)

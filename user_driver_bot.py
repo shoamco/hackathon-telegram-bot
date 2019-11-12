@@ -99,7 +99,7 @@ def get_place(update, context):
     update.message.reply_text(f"Your ride has been recorded:\n"
                               f"ride: {context.user_data['ride']}\n"
                               f"user:{context.user_data['user']} ")
-    library_functions.insert_ride_to_db(context.user_data['user'], chat_id)
+    library_functions.insert_ride_to_db(context.user_data['ride'], chat_id)
     library_functions.insert_user(context.user_data['user'])
     return ConversationHandler.END
 

@@ -3,6 +3,7 @@ import requests
 # from Excceptions import UnknownLocation, Time_Format_Error
 import typing
 
+import db_functions
 from db_functions import add_user
 
 
@@ -56,10 +57,11 @@ def validation_hour(hour: str):
 
 
 def insert_user(user_dict):
-    """    add_user(user_id, user_first_name, user_last_name, phone_number):"""
+    """    def add_user(user_id, user_first_name, user_last_name, phone_number, user_name):
+    """
     """   ride: {'date': '2019-11-12', 'time': '8:30', 'source': 'Jerusalem', 'destination': 'haifa', 'place': '3'}"""
     """user: {'id': 586475104, 'first_name': 'Mickaël', 'last_name': 'Balensi', 'username': None}"""
-    user_id, user_first_name, user_last_name, phone_number = user_dict
+    user_id, user_first_name, user_last_name, phone_number ,user_name = user_dict  #=>>> ici yaura un pb car jai pas encore le num de telephone
     add_user(user_id, user_first_name, user_last_name, phone_number)
 
 def get_rides(details_dict):
@@ -67,9 +69,9 @@ def get_rides(details_dict):
     # get_source_destination_list(from_where, to_where, date):
 
 
-def insert_ride_to_db(data_dict, driver_id=''):
+def insert_ride_to_db(data_dict:dict, driver_id):
     """{'date': '2019-11-13', 'time': '8:39', 'source': 'jERUSALEM', 'destination': 'HAIFA', 'place': '4'}"""
-    date, hour, departure, destination, nb_passengers = data_dict
+    date, hour, departure, destination, nb_passengers = data_dict.values()
     if place_validation(departure) and place_validation(destination) and validation_hour(hour):
-        # db_functions.add_trip(driver_id, departure, destination, date, hour, nb_passengers)
-        print()
+        db_functions.add_trip(driver_id, departure, destination, date, hour, nb_passengers)
+
