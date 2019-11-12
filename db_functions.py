@@ -12,18 +12,14 @@ tremps = db.get_collection("tremps")
 
 
 def add_tremp(trip_id, nb_passengers,  trempist_id):
-    #trip_choosen = list(db.trips.findById(trip_id))
-
-    trip_choosen = list(db.trips.find({ '_id': { '$in': [  ObjectId(trip_id) ] } }))
-
-    #trip_choosen = list(db.trips.find({"_id" : ObjectId(trip_id)}))
-    #trip_choosen = list(db.trips.find(ObjectId(trip_id)))
+    nb_passengers = int(nb_passengers)
+    trip_choosen = db.trips.find_one({"_id" : ObjectId(trip_id)})
     print(trip_choosen)
-    trip_choosen = trip_choosen[0]
-    print(trip_choosen)
+    # trip_choosen = trip_choosen[0]
+    # print(trip_choosen)
 
     # 1 => take details from driver
-    driver_details = list(users.find({"user_id" : trip_choosen["driver_id"]}))
+    driver_details = list(db.users.find({"user_id" : trip_choosen["driver_id"]}))
     phone_number = driver_details[0]["phone_number"]
     name = driver_details[0]["user_first_name"] + " " + driver_details[0]["user_last_name"]
 
@@ -32,8 +28,8 @@ def add_tremp(trip_id, nb_passengers,  trempist_id):
     tremps.replace_one(tremp_details, tremp_details , upsert=True)
 
     #3 => update available seats
-    trips.update_one({ "trip_id" : trip_id,
-                       "$inc" : { "nb_passengers" : -nb_passengers}})
+    trips.update_one({ "trip_id" : trip_id},
+                     {"$inc" : { "nb_passengers" : -nb_passengers}})
     return name, phone_number
 
 
@@ -65,11 +61,11 @@ def get_source_destination_list(from_where, to_where, date, nb_passengers):
                                     {"date": date },
                                     {"nb_passengers" : {"$gte" : number_of_passengers}}]}))
 
-    print(trips_results)
-
+    # print(trips_results)
+"""
 users.delete_many({})
 trips.delete_many({})
-tremps.delete_many({})
+tremps.delete_many({})"""
 add_user("317767556", "Shani", "Ehrentreu", "0548523955")
 add_user("317767886", "Dobora", "Belansi", "0504163232")
 add_trip("317767556", "Beitar", "Yafo","12/11/2019", "13:30", "5" )
@@ -79,4 +75,4 @@ add_trip("317767886", "Lod", "Jerusalem", "12/11/2019", "13:30", "2")
 add_trip("317767556", "Beitar", "Jerusalem", "12/11/2019", "13:30", "4")
 get_source_destination_list("Beitar", "Jerusalem", "12/11/2019", "2")
 
-add_tremp("5dcaad84d21dacefda25f475" , 2 , "317767556")
+add_tremp("5dcaae01d21dacefda25f4b4" , "2" , "317767556")
