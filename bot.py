@@ -35,10 +35,9 @@ def start(update: Update, context: CallbackContext):
     contact_keyboard = KeyboardButton(text="send_contact", request_contact=True)
     custom_keyboard = [[contact_keyboard]]
     reply_markup = ReplyKeyboardMarkup(custom_keyboard)
-    context.bot.send_message(chat_id=chat_id, text=" Welcome\nWould you mind sharing your location and contact with me?",
+    context.bot.send_message(chat_id=chat_id,
+                             text=" Welcome\nWould you mind sharing your location and contact with me?",
                              reply_markup=reply_markup)
-
-
 
     logger.info(f"> after #{chat_id}")
     return PHONE
@@ -46,11 +45,16 @@ def start(update: Update, context: CallbackContext):
 
 def get_phone(update, context):
     chat_id = update.effective_chat.id
-    logger.info(f"get_phone#{chat_id}")
+    phone = update.message.contact.phone_number
+    logger.info(f"get_phone#{chat_id} phone {phone}")
+    context.user_data['phone'] = phone
+
     update.message.reply_text(text="Are you a passenger or a driver? ",
                               reply_markup=buttons.get_enter_buttons())
 
+
     return ConversationHandler.END
+
 
 def cancel(update, context):
     user = update.message.from_user
@@ -60,6 +64,7 @@ def cancel(update, context):
 
     return ConversationHandler.END
 
+
 def get_type_user():
     pass
 
@@ -68,6 +73,7 @@ def debug(update: Update, context: CallbackContext):
     chat_id = update.effective_chat.id
     logger.info(f"in debug #{chat_id}")
     update.message.reply_text(text="all the details ")
+
 
 #
 # start_handler = CommandHandler(['start'], start)
