@@ -3,7 +3,7 @@ import requests
 # from Excceptions import UnknownLocation, Time_Format_Error
 import typing
 
-from db_functions_oldeversion import add_user
+from db_functions import add_user
 
 
 class UnknownLocation(Exception):
