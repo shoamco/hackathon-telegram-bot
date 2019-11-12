@@ -56,13 +56,14 @@ def validation_hour(hour: str):
     return len(hour.split(':')) == 2 and 0 <= int(hours) < 60 and 0 <= int(minute) < 60
 
 
-def insert_user(user_dict):
+def insert_user(user_dict:dict):
     """    def add_user(user_id, user_first_name, user_last_name, phone_number, user_name):
     """
     """   ride: {'date': '2019-11-12', 'time': '8:30', 'source': 'Jerusalem', 'destination': 'haifa', 'place': '3'}"""
     """user: {'id': 586475104, 'first_name': 'Mickaël', 'last_name': 'Balensi', 'username': None}"""
-    user_id, user_first_name, user_last_name, phone_number ,user_name = user_dict  #=>>> ici yaura un pb car jai pas encore le num de telephone
+    user_id, user_first_name, user_last_name, phone_number ,user_name = user_dict.values()  #=>>> ici yaura un pb car jai pas encore le num de telephone
     add_user(user_id, user_first_name, user_last_name, phone_number)
+
 
 def get_rides(details_dict):
     """params"""
