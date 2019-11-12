@@ -93,14 +93,17 @@ def get_place(update, context):
     context.user_data['ride']['place'] = text
 
     update.message.reply_text(f"Your ride has been recorded:\n"
+
                               f"ride: {context.user_data['ride']}\n")
     library_functions.insert_ride_to_db(context.user_data['ride'], chat_id)
+
+
 
     return ConversationHandler.END
 
 
 def cancel(update, context):
-    user = update.message.from_user
+    user = update.message.from_user,
     logger.info("User %s canceled the conversation.", user.first_name)
     update.message.reply_text('cancel.', reply_markup=ReplyKeyboardRemove())
     return ConversationHandler.END
