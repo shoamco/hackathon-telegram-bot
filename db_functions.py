@@ -10,6 +10,14 @@ trips = db.get_collection("trips")
 tremps = db.get_collection("tremps")
 
 
+def add_tremp(trip_id, nb_passengers, driver_id, trempist_id):
+    tremp_details = { 'trip_id' : trip_id, "trempist_id" : trempist_id, "nb_passengers" : nb_passengers}
+    tremps.replace_one(tremp_details, tremp_details , upsert=True)
+    trips.update_one({ "trip_id" : trip_id,
+                       "$inc" : { "nb_passengers" : -nb_passengers}})
+
+
+
 def add_user(user_id, user_first_name, user_last_name, phone_number):
     user_details = {"user_id": user_id, "user_first_name": user_first_name, "user_last_name": user_last_name,
                     "phone_number": phone_number}
@@ -28,10 +36,11 @@ def add_trip(driver_id, departure, destination, date, hour, nb_passengers):
     except:
         pass
 
-def get_source_destination_list(from_where, to_where, date):
+def get_source_destination_list(from_where, to_where, date, nb_passengers):
     l =list(db.trips.find({"$and": [{"departure": from_where.lower().title().strip()},
                                     {"destination": to_where.lower().title().strip()},
-                                    {"date": date }]}))
+                                    {"date": date },
+                                    {"nb_pseengers" : {"$gte" : nb_passengers}}]}))
     print(l)
 
 add_user("317767556", "Shani", "Ehrentreu", "0548523955")
@@ -41,5 +50,5 @@ add_trip("317767776", "Heifa", "Jerusalem", "12/11/2019", "13:30", "5")
 add_trip("317767556", "Beitar", "Jerusalem", "12/11/2019", "13:30", "1")
 add_trip("317767886", "Lod", "Jerusalem", "12/11/2019", "13:30", "2")
 add_trip("317767556", "Beitar", "Jerusalem", "12/11/2019", "13:30", "4")
-print ("---------------------------")
-get_source_destination_list("Beitar", "Jerusalem")
+get_source_destination_list("Beitar", "Jerusalem", "12/11/2019", "2")
+
