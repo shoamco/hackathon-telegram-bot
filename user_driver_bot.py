@@ -24,7 +24,8 @@ def start_driver(update, context):
     first_name = update.effective_chat.first_name
     last_name = update.effective_chat.last_name
     username = update.effective_chat.username
-    logger.info(f"in start_driver id#{chat_id} name {first_name} {last_name} username {username}")
+    # phone = update.effective_chat.phone
+    logger.info(f"in start_driver id#{chat_id} name {first_name} {last_name} username {username} phone {phone}")
     update.message.reply_text('Enter a travel date\n', one_time_keyboard=True, reply_markup=buttons.get_dates_options())
     context.user_data['ride'] = dict()
     context.user_data['user'] = {"id": chat_id, "first_name": first_name, "last_name": last_name, "username": username}
@@ -102,7 +103,7 @@ def get_place(update, context):
     update.message.reply_text(f"Your ride has been recorded:\n"
                               f"ride: {context.user_data['ride']}\n"
                               f"user:{context.user_data['user']} ")
-    library_functions.insert_ride_to_db(context.user_data['user'], chat_id)
+    library_functions.insert_ride_to_db(context.user_data['ride'], chat_id)
     library_functions.insert_user(context.user_data['user'])
     return ConversationHandler.END
 
