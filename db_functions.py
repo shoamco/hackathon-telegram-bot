@@ -1,3 +1,4 @@
+from bson import ObjectId
 from pymongo import MongoClient
 import pymongo
 import feedparser
@@ -10,12 +11,30 @@ trips = db.get_collection("trips")
 tremps = db.get_collection("tremps")
 
 
-def add_tremp(trip_id, nb_passengers, driver_id, trempist_id):
+def add_tremp(trip_id, nb_passengers,  trempist_id):
+    #trip_choosen = list(db.trips.findById(trip_id))
+
+    trip_choosen = list(db.trips.find({ '_id': { '$in': [  ObjectId(trip_id) ] } }))
+
+    #trip_choosen = list(db.trips.find({"_id" : ObjectId(trip_id)}))
+    #trip_choosen = list(db.trips.find(ObjectId(trip_id)))
+    print(trip_choosen)
+    trip_choosen = trip_choosen[0]
+    print(trip_choosen)
+
+    # 1 => take details from driver
+    driver_details = list(users.find({"user_id" : trip_choosen["driver_id"]}))
+    phone_number = driver_details[0]["phone_number"]
+    name = driver_details[0]["user_first_name"] + " " + driver_details[0]["user_last_name"]
+
+    #2 => add tremp record to the table
     tremp_details = { 'trip_id' : trip_id, "trempist_id" : trempist_id, "nb_passengers" : nb_passengers}
     tremps.replace_one(tremp_details, tremp_details , upsert=True)
+
+    #3 => update available seats
     trips.update_one({ "trip_id" : trip_id,
                        "$inc" : { "nb_passengers" : -nb_passengers}})
-
+    return name, phone_number
 
 
 def add_user(user_id, user_first_name, user_last_name, phone_number):
@@ -26,23 +45,31 @@ def add_user(user_id, user_first_name, user_last_name, phone_number):
 
 def add_trip(driver_id, departure, destination, date, hour, nb_passengers):
     try:
-        user_id_match = list(db.users.find({"user_id":driver_id}))
-        if len(user_id_match)!=1:
+        number_of_passengers = int(nb_passengers.strip())
+        result_driver_find = db.users.find({"user_id":driver_id})
+        result_list = list(result_driver_find)
+        #user_id_match = list()
+        if len(result_list)!=1:
             raise ("can't add the trip, the driver doesnwt exist in users")
         else:
             trip_details = {"driver_id": driver_id, "departure": departure.lower().title().strip(), "destination": destination.lower().title().strip(),
-                            "date": date, "hour":hour, "nb_passengers": nb_passengers.strip()}
+                            "date": date, "hour":hour, "nb_passengers": number_of_passengers}
         trips.replace_one(trip_details, trip_details, upsert=True)
     except:
         pass
 
 def get_source_destination_list(from_where, to_where, date, nb_passengers):
-    l =list(db.trips.find({"$and": [{"departure": from_where.lower().title().strip()},
+    number_of_passengers = int(nb_passengers.strip())
+    trips_results =list(db.trips.find({"$and": [{"departure": from_where.lower().title().strip()},
                                     {"destination": to_where.lower().title().strip()},
                                     {"date": date },
-                                    {"nb_pseengers" : {"$gte" : nb_passengers}}]}))
-    print(l)
+                                    {"nb_passengers" : {"$gte" : number_of_passengers}}]}))
 
+    print(trips_results)
+
+users.delete_many({})
+trips.delete_many({})
+tremps.delete_many({})
 add_user("317767556", "Shani", "Ehrentreu", "0548523955")
 add_user("317767886", "Dobora", "Belansi", "0504163232")
 add_trip("317767556", "Beitar", "Yafo","12/11/2019", "13:30", "5" )
@@ -52,3 +79,4 @@ add_trip("317767886", "Lod", "Jerusalem", "12/11/2019", "13:30", "2")
 add_trip("317767556", "Beitar", "Jerusalem", "12/11/2019", "13:30", "4")
 get_source_destination_list("Beitar", "Jerusalem", "12/11/2019", "2")
 
+add_tremp("5dcaad84d21dacefda25f475" , 2 , "317767556")
