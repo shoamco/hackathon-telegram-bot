@@ -1,4 +1,3 @@
-
 import logging
 
 from telegram import Update
@@ -9,20 +8,22 @@ from telegram import ReplyKeyboardRemove
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters,
                           ConversationHandler)
 
-
 import logging
 
-from telegram import Update,CallbackQuery
+from telegram import Update, CallbackQuery
 from telegram.ext import CommandHandler, CallbackContext
-
 
 logger = logging.getLogger(__name__)
 PASSENGER_CONFIRMATION_RIDE = range(2)
+
+
 def select_ride(update, context):
     chat_id = update.effective_chat.id
     logger.info(f"Passenger:in select_ride #{chat_id}")
-    update.message.reply_text('Please select a ride:\n', one_time_keyboard=True, reply_markup=buttons.get_dates_options())
+    update.message.reply_text('Please select a ride:\n', one_time_keyboard=True,
+                              reply_markup=buttons.get_dates_options())
     return PASSENGER_CONFIRMATION_RIDE
+
 
 def confirmation_ride(update, context):
     chat_id = update.effective_chat.id

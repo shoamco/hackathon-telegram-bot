@@ -2,7 +2,7 @@ import logging
 
 from telegram import Update
 from telegram.ext import CommandHandler, CallbackContext, MessageHandler, Filters, Updater
-
+from telegram import InlineKeyboardButton, ReplyKeyboardRemove, ReplyKeyboardMarkup
 import settings
 import usre_passenger_bot
 from telegram import ReplyKeyboardRemove
@@ -27,10 +27,13 @@ from usre_passenger_bot import PASSENGER_CONFIRMATION_RIDE
 # start_handler = CommandHandler('start_driver', start)
 def start(update: Update, context: CallbackContext):
     chat_id = update.effective_chat.id
-    logger.info(f"> Start chat #{chat_id}")
+    logger.info(f"> Start chat select passenger/driver #{chat_id}")
+    menu_main = [[InlineKeyboardButton('driver', callback_data='/driver')]]
+    reply_markup = ReplyKeyboardMarkup(menu_main)
     # context.bot.send_message(chat_id=chat_id, text=" Welcome\nAre you a passenger or a driver? ",reply_markup=buttons.get_enter_buttons())
-    update.message.reply_text(text=" Welcome\nAre you a passenger or a driver? ",
-                              reply_markup=buttons.get_enter_buttons())
+    update.message.reply_text(text=" Welcome\nAre you a passenger or a driver? ",reply_markup=reply_markup)
+    # update.message.reply_text('Choose your option:', reply_markup=buttons.get_enter_buttons())
+    # update.message.reply_text(text=" Welcome\nAre you a passenger or a driver? ",reply_markup=buttons.get_enter_buttons())
     logger.info(f"> after #{chat_id}")
 
 
