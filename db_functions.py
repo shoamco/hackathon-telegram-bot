@@ -12,7 +12,13 @@ def create_tremp_easy_data_base():
     users = db.get_collection("users")
     trips = db.get_collection("trips")
     tremps = db.get_collection("tremps")
+    """add_trip("317767556", "Beitar", "Yafo", "12/11/2019", "13:30", "5")
+    add_trip("317767776", "Heifa", "Jerusalem", "12/11/2019", "13:30", "5")
+    add_trip("317767556", "Beitar", "Jerusalem", "12/11/2019", "13:30", "1")
+    add_trip("317767886", "Lod", "Jerusalem", "12/11/2019", "13:30", "2")
+    add_trip("317767556", "Beitar", "Jerusalem", "12/11/2019", "13:30", "4")"""
     return db, users, trips, tremps
+
 
 def add_tremp(trip_id, nb_passengers,  trempist_id):
     db, users, trips, tremps = create_tremp_easy_data_base()
@@ -51,20 +57,24 @@ def add_user(user_id, user_first_name, user_last_name, phone_number, user_name):
 
 def add_trip(driver_id, departure, destination, date, hour, nb_passengers):
     db, users, trips, tremps = create_tremp_easy_data_base()
-
+    driver_id = str(driver_id)
+    add_user("317767556", "Shani", "Ehrentreu", "0548523955", "@shani")
+    add_user("317767886", "Dobora", "Belansi", "0504163232", "@debora")
+    add_user("586475104", 'Mickaël','Balensi', '','')
     try:
         number_of_passengers = int(nb_passengers.strip())
-        result_driver_find = db.users.find({"user_id":driver_id})
+        result_driver_find = db.users.find({"user_id": driver_id})
         result_list = list(result_driver_find)
         #user_id_match = list()
-        if len(result_list)!=1:
-            raise ("can't add the trip, the driver doesnwt exist in users")
+        if len(result_list) != 1:
+            raise Exception("can't add the trip, the driver doesn't exist in users")
         else:
             trip_details = {"driver_id": driver_id, "departure": departure.lower().title().strip(), "destination": destination.lower().title().strip(),
                             "date": date, "hour":hour, "nb_passengers": number_of_passengers}
         trips.replace_one(trip_details, trip_details, upsert=True)
     except:
         pass
+
 
 def get_source_destination_list(from_where, to_where, date, nb_passengers):
     db, users, trips, tremps = create_tremp_easy_data_base()
@@ -99,16 +109,10 @@ def get_source_destination_list_hours(from_where, to_where, date, hour, nb_passe
 users.delete_many({})
 trips.delete_many({})
 tremps.delete_many({})"""
-add_user("317767556", "Shani", "Ehrentreu", "0548523955", "@shani")
-add_user("317767886", "Dobora", "Belansi", "0504163232", "@debora")
-add_trip("317767556", "Beitar", "Yafo","12/11/2019", "13:30", "5" )
-add_trip("317767776", "Heifa", "Jerusalem", "12/11/2019", "13:30", "5")
-add_trip("317767556", "Beitar", "Jerusalem", "12/11/2019", "13:30", "1")
-add_trip("317767886", "Lod", "Jerusalem", "12/11/2019", "13:30", "2")
-add_trip("317767556", "Beitar", "Jerusalem", "12/11/2019", "13:30", "4")
-get_source_destination_list("Beitar", "Jerusalem", "12/11/2019", "2")
 
-add_tremp("5dcaae01d21dacefda25f4b4" , "2" , "317767556")
+#get_source_destination_list("Beitar", "Jerusalem", "12/11/2019", "2")
+
+#add_tremp("5dcaae01d21dacefda25f4b4" , "2" , "317767556")
 # date= "2019-11-12"
 # hour = "23:15"
 # hour = hour + ":00"
