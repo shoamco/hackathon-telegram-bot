@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 dispatcher = updater.dispatcher
 from user_driver_bot import DRIVER_DATE, DRIVER_TIME, DRIVER_SOURCE, DRIVER_DESTINATION, DRIVER_PLACE
-
+from usre_passenger_bot import  PASSENGER_CONFIRMATION_RIDE
 # start_handler = CommandHandler('start_driver', start)
 def start(update: Update, context: CallbackContext):
     chat_id = update.effective_chat.id
@@ -41,12 +41,12 @@ dispatcher.add_handler(start_handler)
 debug_handler = CommandHandler(['debug'], debug)
 dispatcher.add_handler(debug_handler)
 
-passenger_handler = CommandHandler(['passenger'], usre_passenger_bot.select_ride)
-dispatcher.add_handler(passenger_handler)
+# passenger_handler = CommandHandler(['passenger'], usre_passenger_bot.select_ride)
+# dispatcher.add_handler(passenger_handler)
 driver_conv_handler = ConversationHandler(
     entry_points=[CommandHandler('driver', user_driver_bot.start_driver)],
     states={
-        # DRIVER_DATE: [MessageHandler(Filters.text, user_driver_bot.get_date)],
+
         DRIVER_DATE: [CallbackQueryHandler(user_driver_bot.get_date)],
         DRIVER_TIME: [MessageHandler(Filters.text, user_driver_bot.get_time)],
         DRIVER_SOURCE: [MessageHandler(Filters.text, user_driver_bot.get_source)],
@@ -59,6 +59,19 @@ driver_conv_handler = ConversationHandler(
 )
 dispatcher.add_handler(driver_conv_handler)
 
+
+passenger_conv_handler = ConversationHandler(
+    entry_points=[CommandHandler('passenger', usre_passenger_bot.select_ride)],
+    states={
+
+        PASSENGER_CONFIRMATION_RIDE:[CallbackQueryHandler(usre_passenger_bot.confirmation_ride)]
+
+
+    },
+
+    fallbacks=[CommandHandler('cancel', user_driver_bot.cancel)]
+)
+dispatcher.add_handler(passenger_conv_handler)
 logger.info("* Start polling...")
 
 updater.start_polling()  # Starts polling in a background thread.
