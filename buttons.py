@@ -28,15 +28,30 @@ def get_dates_options():
     reply_markup = InlineKeyboardMarkup(to_cols(buttons, 3))
     return reply_markup
 
-
-def get_collection_buttons(collection):
-    """db = client.get_database("trempDB")
-    trips = db.get_collection("trips")
-    collection = trips.find({})"""
+"""
+def get_collection_buttons(collection, key_field='_id'):
+    db = client.get_database("my_school")
+    trips = db.get_collection("students")
+    collection = trips.find({})
     buttons = []
-    for item in collection:
-        data = f"{item['name']} :"
-        buttons.append(InlineKeyboardButton(data, callback_data=f"{item['_id']}", kwargs={'driverID': {item['_id']}}))
+    for element in collection:
+        data = ''
+        for key, value in element.item():
+            data += f"{key} : {value} \n"
+            buttons.append(InlineKeyboardButton(data, callback_data=f"{element[key_field]}"))
+    reply_markup = InlineKeyboardMarkup(to_cols(buttons, 1))
+    return reply_markup"""
 
+
+def get_collection_buttons(collection,keys_to_fetch =[],key_field=None):
+    if key_field is None: key_field = '_id'
+    buttons = []
+    for element in collection:
+        data = ''
+        assert (isinstance(element, dict))
+        for key in element.keys():
+            if key == "_id" : continue
+            data += f"{key} : {element[key]} \n"
+        buttons.append(InlineKeyboardButton(data, callback_data=f"{element[key_field]}"))
     reply_markup = InlineKeyboardMarkup(to_cols(buttons, 1))
     return reply_markup
