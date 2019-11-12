@@ -17,7 +17,7 @@ def to_cols(data, n_cols=2):
 
 
 def get_enter_buttons():
-    buttons = [InlineKeyboardButton(s, callback_data=s[:64]) for s in ['Offer a trip', 'Search a trip']]
+    buttons = [InlineKeyboardButton(s, callback_data=s) for s in ['driver', 'passenger']]
     reply_markup = InlineKeyboardMarkup(to_cols(buttons))
     return reply_markup
 
