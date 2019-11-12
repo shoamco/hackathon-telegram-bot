@@ -4,6 +4,7 @@ from telegram import Update
 from telegram.ext import CommandHandler, CallbackContext, MessageHandler, Filters, Updater
 
 import settings
+import usre_passenger_bot
 from telegram import ReplyKeyboardRemove
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler,
                           ConversationHandler)
@@ -29,9 +30,19 @@ def start(update: Update, context: CallbackContext):
                               reply_markup=buttons.get_enter_buttons())
     logger.info(f"> afeter #{chat_id}")
 
+def debug(update: Update, context: CallbackContext):
+    chat_id = update.effective_chat.id
+    logger.info(f"in debug #{chat_id}")
+    update.message.reply_text(text="all the details ")
 
 start_handler = CommandHandler(['start'], start)
 dispatcher.add_handler(start_handler)
+
+debug_handler = CommandHandler(['debug'], debug)
+dispatcher.add_handler(debug_handler)
+
+passenger_handler = CommandHandler(['passenger'], usre_passenger_bot.select_ride)
+dispatcher.add_handler(passenger_handler)
 driver_conv_handler = ConversationHandler(
     entry_points=[CommandHandler('driver', user_driver_bot.start_driver)],
     states={
