@@ -105,7 +105,7 @@ def get_place(update, context):
 
 
 def cancel(update, context):
-    user = update.message.from_user
+    user = update.message.from_user,
     logger.info("User %s canceled the conversation.", user.first_name)
     update.message.reply_text('cancel.',
                               reply_markup=ReplyKeyboardRemove())
