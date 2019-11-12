@@ -28,7 +28,7 @@ def add_tremp(trip_id, nb_passengers,  trempist_id):
     tremps.replace_one(tremp_details, tremp_details , upsert=True)
 
     #3 => update available seats
-    trips.update_one({ "trip_id" : trip_id},
+    trips.update_one({"_id" : ObjectId(trip_id)},
                      {"$inc" : { "nb_passengers" : -nb_passengers}})
     return name, phone_number
 
