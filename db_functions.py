@@ -20,7 +20,7 @@ def add_trip(driver_id, departure, destination, date, hour, nb_passengers):
     try:
         user_id_match = list(db.users.find({"user_id":driver_id}))
         if len(user_id_match)!=1:
-            raise ("can't add the trip, the driver doesnwt exist in users")
+            raise Exception("can't add the trip, the driver doesnwt exist in users")
         else:
             trip_details = {"driver_id": driver_id, "departure": departure.lower().title().strip(), "destination": destination.lower().title().strip(),
                             "date": date, "hour":hour, "nb_passengers": nb_passengers.strip()}

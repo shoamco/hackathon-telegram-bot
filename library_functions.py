@@ -33,7 +33,8 @@ def validation_hour(hour:str):
 
 
 def insert_user(user_dict):
-    pass
+    """{'id': 586475104, 'first_name': 'Mickaël', 'last_name': 'Balensi', 'username': None}"""
+
 
 
 def get_rides(details_dict):
