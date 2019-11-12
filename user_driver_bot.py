@@ -6,8 +6,7 @@ import buttons
 import settings
 import library_functions
 from telegram import ReplyKeyboardRemove
-from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters,
-                          ConversationHandler)
+from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, ConversationHandler)
 
 import logging
 
@@ -26,9 +25,6 @@ def start_driver(update, context):
     context.user_data['ride'] = dict()
     # context.user_data['user'] = {"id": chat_id, "first_name": first_name, "last_name": last_name, "username": username}
     return DRIVER_DATE
-
-
-
 
 
 def get_date(update: Update, context: CallbackContext):
@@ -106,7 +102,5 @@ def get_place(update, context):
 def cancel(update, context):
     user = update.message.from_user
     logger.info("User %s canceled the conversation.", user.first_name)
-    update.message.reply_text('cancel.',
-                              reply_markup=ReplyKeyboardRemove())
-
+    update.message.reply_text('cancel.', reply_markup=ReplyKeyboardRemove())
     return ConversationHandler.END
