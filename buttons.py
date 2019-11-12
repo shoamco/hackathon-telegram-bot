@@ -30,9 +30,9 @@ def get_dates_options():
 
 
 def get_collection_buttons(collection):
-    db = client.get_database("trempDB")
+    """db = client.get_database("trempDB")
     trips = db.get_collection("trips")
-    collection = trips.find({})
+    collection = trips.find({})"""
     buttons = []
     for item in collection:
         data = f"{item['name']} :"
