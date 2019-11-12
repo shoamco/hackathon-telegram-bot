@@ -10,6 +10,8 @@ pytest = "*"
 python-telegram-bot = "*"
 telegram = "*"
 pymongo = "*"
+requests = "*"
+feedparser = "*"
 
 [requires]
 python_version = "3.7"
