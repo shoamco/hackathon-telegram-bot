@@ -28,11 +28,10 @@ def add_trip(driver_id, departure, destination, date, hour, nb_passengers):
     except:
         pass
 
-
 def get_source_destination_list(from_where, to_where, date):
     l =list(db.trips.find({"$and": [{"departure": from_where.lower().title().strip()},
                                     {"destination": to_where.lower().title().strip()},
-                                    {"date": date}]}))
+                                    {"date": date }]}))
     print(l)
 
 add_user("317767556", "Shani", "Ehrentreu", "0548523955")
