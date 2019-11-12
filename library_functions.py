@@ -1,6 +1,8 @@
 import requests
 
 #import db_functions
+from Excceptions import UnknownLocation, Time_Format_Error
+
 
 def place_validation(name):
     param ='%20'.join(name.split(' '))
@@ -8,7 +10,7 @@ def place_validation(name):
     r.raise_for_status()  # will raise an exception for HTTp status code != 200
     data = r.json()
     if len(data) == 0:
-        raise Exception(f"I don't know any {name}")
+        raise UnknownLocation(f"I don't know any {name}")
     return True
 
 
@@ -26,14 +28,20 @@ def geocode(name):
 
 def validation_hour(hour:str):
     hours, minute = hour.split(':')
-    return len(hour.split(':')) == 2 and 0 <= int(hours) < 60 and 0 <= int(minute)< 60
+    if not (len(hour.split(':')) == 2 and 0 <= int(hours) < 60 and 0 <= int(minute)< 60):
+        raise Time_Format_Error
 
 
-def get_rides():
+def insert_user(user_dict):
+    pass
+
+
+def get_rides(details_dict):
     """params"""
-    print()
+    #get_source_destination_list(from_where, to_where, date):
 
-def insert_ride_to_db(data_dict, driver_id):
+
+def insert_ride_to_db(data_dict, driver_id=''):
     """{'date': '2019-11-13', 'time': '8:39', 'source': 'jERUSALEM', 'destination': 'HAIFA', 'place': '4'}"""
     date, hour, departure, destination, nb_passengers = data_dict
     if place_validation(departure) and place_validation(destination) and validation_hour(hour):
