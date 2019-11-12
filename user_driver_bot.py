@@ -21,11 +21,7 @@ logger = logging.getLogger(__name__)
 
 def start_driver(update, context):
     chat_id = update.effective_chat.id
-    # first_name = update.effective_chat.first_name
-    # last_name = update.effective_chat.last_name
-    # username = update.effective_chat.username
-    # phone = update.effective_chat.phone
-    # logger.info(f"in start_driver id#{chat_id} name {first_name} {last_name} username {username} phone {phone}")
+
     update.message.reply_text('Enter a travel date\n', one_time_keyboard=True, reply_markup=buttons.get_dates_options())
     context.user_data['ride'] = dict()
     # context.user_data['user'] = {"id": chat_id, "first_name": first_name, "last_name": last_name, "username": username}
@@ -42,7 +38,7 @@ def get_date(update: Update, context: CallbackContext):
     text = query.data
     # text = update.message.text
     # chat_id = update.effective_chat.id
-    logger.info(f"! [#{chat_id}] Callback {text!r}.  Checking age...")
+    logger.info(f"! [#{chat_id}] Callback {text!r}")
     logger.info(f"in get_date #{chat_id}")
     context.user_data['ride']['date'] = text
 

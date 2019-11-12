@@ -13,6 +13,7 @@ import user_driver_bot
 import buttons
 from telegram import ReplyKeyboardRemove, KeyboardButton
 import library_functions
+
 updater = Updater(token=settings.BOT_TOKEN, use_context=True)
 logging.basicConfig(
     format='[%(levelname)s %(asctime)s %(module)s:%(lineno)d] %(message)s',
@@ -22,7 +23,8 @@ logger = logging.getLogger(__name__)
 
 dispatcher = updater.dispatcher
 from user_driver_bot import DRIVER_DATE, DRIVER_TIME, DRIVER_SOURCE, DRIVER_DESTINATION, DRIVER_PLACE
-from usre_passenger_bot import PASSENGER_CONFIRMATION_RIDE
+from usre_passenger_bot import PASSENGER_DATE, PASSENGER_TIME, PASSENGER_SOURCE, PASSENGER_DESTINATION, PASSENGER_PLACE, \
+    PASSENGER_SELECT_RIDE,PASSENGER_CONFIRMATION_RIDE
 
 PHONE = range(1)
 
@@ -57,9 +59,8 @@ def get_data_user(update, context):
 
     library_functions.insert_user(context.user_data['user'])
 
-    update.message.reply_text(text= f"user:{context.user_data['user']}\n Are you a passenger or a driver? ",
+    update.message.reply_text(text=f"user:{context.user_data['user']}\n Are you a passenger or a driver? ",
                               reply_markup=buttons.get_enter_buttons())
-
 
     return ConversationHandler.END
 
@@ -120,10 +121,17 @@ driver_conv_handler = ConversationHandler(
 dispatcher.add_handler(driver_conv_handler)
 
 passenger_conv_handler = ConversationHandler(
-    entry_points=[CommandHandler('passenger', usre_passenger_bot.select_ride)],
+    entry_points=[CommandHandler('passenger', usre_passenger_bot.start_passenger)],
     states={
 
-        PASSENGER_CONFIRMATION_RIDE: [CallbackQueryHandler(usre_passenger_bot.confirmation_ride)]
+
+        PASSENGER_DATE: [CallbackQueryHandler(usre_passenger_bot.get_date)],
+        PASSENGER_TIME: [MessageHandler(Filters.text, usre_passenger_bot.get_time)],
+        PASSENGER_SOURCE: [MessageHandler(Filters.text, usre_passenger_bot.get_source)],
+        PASSENGER_DESTINATION: [MessageHandler(Filters.text, usre_passenger_bot.get_destination)],
+        PASSENGER_PLACE: [MessageHandler(Filters.text, usre_passenger_bot.get_place)],
+        PASSENGER_SELECT_RIDE: [CallbackQueryHandler(usre_passenger_bot.select_ride)]
+
 
     },
 
