@@ -1,13 +1,12 @@
-# {YOUR BOT NAME HERE}
-<https://t.me/{BOT_ID}>
+Tremp_easy
+<https://t.me/@Tremp_easy_bot>
 
-{ONE LINE BOT DESCRIPTION HERE} 
+Bot that offer easy platform to share your car trip with others, offers them a simply way to contact the driver wihtout knowing him, wihtout Watsapp incessant messages disturbing your daily life, just by enter your details research and automatically update the driver from new passenger by sending him your phone number.
 
-* {Participant 1 Name}
-* {Participant 2 Name}
-* {Participant 3 Name}
+* Shoam Cohen
+* Shani Ehrentreu
+* Deborah Balensi
 
-{OPTIONAL: MORE PROJECT INFO HERE}
 
 ## Screenshots
 
@@ -16,8 +15,8 @@
 ## How to Run This Bot
 ### Prerequisites
 * Python 3.7
-* pipenv
-* {ADD MORE DEPENDENCIES HERE - FOR EXAMPLE MONGODB OR ANYTHING ELSE}
+* MongoDB
+* Telegram App
 
 ### Setup
 * Clone this repo from github
@@ -46,5 +45,9 @@ To run all test  use:
 ## Credits and References
 * [Telegram Docs](https://core.telegram.org/bots)
 * [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
-* {ADD MORE REFERENCES TO LIBRARIES, APIS AND CODE SNIPPETS HERE}
+* [MongoDB Documentation](https://docs.mongodb.com/manual/)
+* [Udi Material](http://lms.10x.org.il/)
+* [Nominatim API](https://nominatim.openstreetmap.org/)
+* [Nehama Verbov for her precious help with GIT operations]
+* [Amitai, Udi, Ola, Michal, Margalit for tutoring and support ]
 
