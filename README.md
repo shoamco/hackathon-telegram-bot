@@ -10,7 +10,12 @@ Bot that offer easy platform to share your car trip with others, offers them a s
 
 ## Screenshots
 
-![SCREESHOT DECSRIPTION](screenshots/shopping-list-bot-1.png)
+![mongo DB database](screenshots/MongoDB.png)
+![/start command with user details](screenshots/UserDetails.png)
+![/driver command to enter trip details](screenshots/DriverTripDetails.png)
+![/passenger command to search a matching tremp](screenshots/ResearchDetails.png)
+![Validation input](screenshots/image.png)
+![Driver notification after reserving tremp](screenshots/UpdateDriverNotification.png)
 
 ## How to Run This Bot
 ### Prerequisites
