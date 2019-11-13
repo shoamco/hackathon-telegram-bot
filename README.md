@@ -11,7 +11,7 @@
 
 ## Screenshots
 
-![SCREESHOT DECSRIPTION](screenshots/shopping-list-bot-1.png)
+![SCREESHOT DECSRIPTION](screenshots/image.png)
 
 ## How to Run This Bot
 ### Prerequisites
