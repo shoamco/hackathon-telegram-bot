@@ -60,3 +60,4 @@ To run all test  use:
 * [Nominatim API](https://nominatim.openstreetmap.org/)
 * [Nehama Verbov for her precious help with GIT operations]
 * [Amitai, Udi, Ola, Michal, Margalit for tutoring and support ]
+* Esther Krispin
